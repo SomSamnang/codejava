@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JS Design</title>
+
+    <!-- ✅ Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+    />
+
+    <!-- ✅ Custom CSS -->
+    <link rel="stylesheet" href="home-style.css" />
+  </head>
+  <body>
+    <!-- ✅ Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" href="#">MyShop</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="#" data-filter="all">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" data-filter="Shopping">Shopping</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" data-filter="Footwear">Footwear</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" data-filter="New Footwear Drop"
+                >New Drop</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!--  Title Area -->
+    <div class="container mt-4">
+      <h2 id="section-title" class="text-center">All Products</h2>
+    </div>
+
+    <!--  Product List -->
+    <div class="container mt-4">
+      <div class="row" id="item-list"></div>
+    </div>
+  </body>
+  <!--  JavaScript -->
+  <script>
+    const itemList = [
+      {
+        title: "New Footwear Drop",
+        item: [
+          { img: "img/1.jpg", price: "$15.00" },
+          { img: "img/2.jpg", price: "$25.00" },
+          { img: "img/3.jpg", price: "$16.00" },
+          { img: "img/2.jpg", price: "$19.00" },
+        ],
+      },
+      {
+        title: "Shopping",
+        item: [
+          { img: "img/1.jpg", price: "$15.00" },
+          { img: "img/2.jpg", price: "$25.00" },
+          { img: "img/3.jpg", price: "$16.00" },
+          { img: "img/2.jpg", price: "$19.00" },
+        ],
+      },
+      {
+        title: "Footwear",
+        item: [
+          { img: "img/1.jpg", price: "$15.00" },
+          { img: "img/2.jpg", price: "$25.00" },
+          { img: "img/3.jpg", price: "$16.00" },
+          { img: "img/2.jpg", price: "$19.00" },
+        ],
+      },
+      {
+        title: "New Shop",
+        item: [
+          { img: "img/1.jpg", price: "$15.00" },
+          { img: "img/2.jpg", price: "$25.00" },
+          { img: "img/3.jpg", price: "$16.00" },
+          { img: "img/2.jpg", price: "$19.00" },
+        ],
+      },
+    ];
+
+    const itemBox = document.getElementById("item-list");
+
+    function getItemList(filter = "all") {
+      let html = "";
+      const filteredList =
+        filter === "all"
+          ? itemList
+          : itemList.filter((group) => group.title === filter);
+
+      filteredList.forEach((group) => {
+        let itemHtml = "";
+        group.item.forEach((product) => {
+          itemHtml += `
+            <li>
+              <a href="#">
+                <img src="${product.img}" alt="" width="100">
+                <span>${product.price}</span>
+              </a>
+            </li>
+          `;
+        });
+
+        html += `
+          <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-12 item-box-1 mb-4">
+            <div class="box border p-3">
+              <h4>${group.title}</h4>
+              <div class="item">
+                <ul class="list-unstyled d-flex flex-wrap gap-3">
+                  ${itemHtml}
+                </ul>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      itemBox.innerHTML = html;
+    }
+
+    // Load all on first load
+    getItemList();
+
+    // Handle menu clicks
+    document.querySelectorAll(".nav-link").forEach((link) => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        const filter = link.getAttribute("data-filter");
+
+        // Update product list
+        getItemList(filter);
+
+        // Update navbar active state
+        document
+          .querySelectorAll(".nav-link")
+          .forEach((l) => l.classList.remove("active"));
+        link.classList.add("active");
+
+        // Update the section title
+        document.getElementById("section-title").textContent =
+          filter === "all" ? "All Products" : filter;
+      });
+    });
+  </script>
+
+  <!--  Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>I Love You</title>
+    <link rel="stylesheet" href="home-style.css" />
+  </head>
+
+  <body>
+    <h1>Array Method</h1>
+
+    <input type="text" id="txtName" placeholder="Enter Name..!" />
+    <input type="number" id="txtPrice" placeholder="Enter Price..!" />
+    <input type="button" value="Submit" id="btn1" />
+    <button id="btnCancel">Cancel</button>
+    <button id="btnFilter">Filter</button>
+    <button id="btnShowAll">Show All</button>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Date</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="demo"></tbody>
+    </table>
+
+    <!-- Total Price -->
+    <div id="totalPrice" style="margin-top: 20px">
+      Total Price: <span id="priceNumber" style="color: red">0</span
+      ><span style="color: red">$</span>
+    </div>
+
+    <script>
+      // Initial data (will be overwritten by localStorage if any)
+      const itemList = [
+        {
+          id: 1,
+          name: "HTML",
+          price: "20$",
+          date: new Date().toLocaleString(),
+        },
+        { id: 2, name: "CSS", price: "30$", date: new Date().toLocaleString() },
+      ];
+
+      let currentId =
+        itemList.length > 0 ? itemList[itemList.length - 1].id + 1 : 1;
+
+      const txtName = document.getElementById("txtName");
+      const txtPrice = document.getElementById("txtPrice");
+      const btnSave = document.getElementById("btn1");
+      const btnCancel = document.getElementById("btnCancel");
+      const demo = document.getElementById("demo");
+      const priceNumber = document.getElementById("priceNumber");
+      const btnFilter = document.getElementById("btnFilter");
+      const btnShowAll = document.getElementById("btnShowAll");
+
+      let editIndex = -1;
+
+      // Save to localStorage
+      function saveToLocalStorage() {
+        localStorage.setItem("itemList", JSON.stringify(itemList));
+        localStorage.setItem("currentId", currentId);
+      }
+
+      // Load from localStorage
+      function loadFromLocalStorage() {
+        const storedList = localStorage.getItem("itemList");
+        const storedId = localStorage.getItem("currentId");
+        if (storedList) {
+          itemList.length = 0; // Clear current array
+          itemList.push(...JSON.parse(storedList));
+        }
+        if (storedId) currentId = parseInt(storedId);
+      }
+
+      function renderTable() {
+        let html = "";
+        let total = 0;
+
+        itemList.forEach((item, i) => {
+          const priceNum = parseFloat(item.price.replace("$", ""));
+          html += `
+          <tr>
+            <td>${item.id}</td>
+            <td>${item.name}</td>
+            <td>${priceNum.toFixed(2)}$</td>
+            <td>${item.date || ""}</td>
+            <td>
+              <button class="btn-update" onclick="editItem(${i})">Update</button>
+              <button class="btn-delete" onclick="deleteItem(${i})">Delete</button>
+            </td>
+          </tr>
+        `;
+          total += priceNum;
+        });
+
+        demo.innerHTML = html;
+        priceNumber.textContent = total.toFixed(2);
+      }
+
+      function renderFilteredTable(filteredItems) {
+        let html = "";
+        let total = 0;
+
+        filteredItems.forEach((item, i) => {
+          const priceNum = parseFloat(item.price.replace("$", ""));
+          html += `
+          <tr>
+            <td>${item.id}</td>
+            <td>${item.name}</td>
+            <td>${priceNum.toFixed(2)}$</td>
+            <td>${item.date || ""}</td>
+            <td>
+               <button class="btn-update" onclick="editItem(${i})">Update</button>
+              <button class="btn-delete" onclick="deleteItem(${i})">Delete</button>
+            </td>
+          </tr>
+        `;
+          total += priceNum;
+        });
+
+        demo.innerHTML = html;
+        priceNumber.textContent = total.toFixed(2);
+      }
+
+      function editItem(index) {
+        txtName.value = itemList[index].name;
+        txtPrice.value = parseFloat(itemList[index].price);
+        editIndex = index;
+        btnSave.value = "Update";
+        btnCancel.style.display = "inline";
+      }
+
+      function deleteItem(index) {
+        if (confirm("Are you sure you want to delete this item?")) {
+          itemList.splice(index, 1);
+          saveToLocalStorage();
+          resetForm();
+          renderTable();
+        }
+      }
+
+      function resetForm() {
+        txtName.value = "";
+        txtPrice.value = "";
+        editIndex = -1;
+        btnSave.value = "Submit";
+        btnCancel.style.display = "none";
+      }
+
+      btnSave.addEventListener("click", function () {
+        const nameValue = txtName.value.trim();
+        const priceValue = txtPrice.value.trim();
+
+        if (!nameValue || !priceValue) {
+          alert("Please enter both name and price.");
+          return;
+        }
+
+        const formattedPrice = parseFloat(priceValue).toFixed(2) + "$";
+
+        if (editIndex === -1) {
+          itemList.push({
+            id: currentId++,
+            name: nameValue,
+            price: formattedPrice,
+            date: new Date().toLocaleString(),
+          });
+          alert("Item added successfully!");
+        } else {
+          itemList[editIndex].name = nameValue;
+          itemList[editIndex].price = formattedPrice;
+          // Keep existing date
+          alert("Item updated successfully!");
+        }
+
+        saveToLocalStorage();
+        resetForm();
+        renderTable();
+      });
+
+      btnCancel.addEventListener("click", resetForm);
+
+      btnFilter.addEventListener("click", function () {
+        const nameText = txtName.value.trim().toLowerCase();
+        const priceText = txtPrice.value.trim();
+
+        if (!nameText && !priceText) {
+          alert("Please enter a name or price to filter.");
+          return;
+        }
+
+        const filteredItems = itemList.filter((item) => {
+          const nameMatch = nameText
+            ? item.name.toLowerCase().includes(nameText)
+            : true;
+          const priceValue = parseFloat(item.price.replace("$", ""));
+          const priceMatch = priceText
+            ? priceValue === parseFloat(priceText)
+            : true;
+          return nameMatch && priceMatch;
+        });
+
+        renderFilteredTable(filteredItems);
+      });
+
+      btnShowAll.addEventListener("click", function () {
+        txtName.value = "";
+        txtPrice.value = "";
+        renderTable();
+      });
+
+      window.editItem = editItem;
+      window.deleteItem = deleteItem;
+
+      loadFromLocalStorage();
+      renderTable();
+    </script>
+  </body>
+</html>

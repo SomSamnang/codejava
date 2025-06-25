@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image List Example</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="demo"></div>
+
+    <div class="img-list"></div>
+
+    <input type="button" value="Click Me" id="btn1" />
+    <input type="button" value="Click New" id="btn2" />
+
+    <script>
+      const imgList = [
+        { title: "Apple", img: "img/images.jpg" },
+        { title: "Google", img: "img/images.jpg" },
+        { title: "SpaceX", img: "img/images.jpg" },
+      ];
+
+      // Load image boxes
+      function getImgList() {
+        let txt = "";
+        for (let i in imgList) {
+          txt += `
+          <div class="box">
+            <img src="${imgList[i].img}" alt="${imgList[i].title}">
+            <h1>${imgList[i].title}</h1>
+          </div>
+        `;
+        }
+        document.querySelector(".img-list").innerHTML = txt;
+      }
+
+      getImgList();
+
+      // List color names (btn1)
+      document.getElementById("btn1").addEventListener("click", () => {
+        const colorList = ["Red", "Green", "Blue", "Yellow", "Black"];
+        let txt = "";
+        for (let i in colorList) {
+          txt += `<li><a>${colorList[i]}</a></li>`;
+        }
+        document.getElementById("demo").innerHTML = `<ul>${txt}</ul>`;
+      });
+
+      // List styled language items (btn2)
+      document.getElementById("btn2").addEventListener("click", () => {
+        const colorList = [
+          { name: "HTML", color: "orange" },
+          { name: "CSS", color: "pink" },
+          { name: "JavaScript", color: "blue" },
+        ];
+        let txt = "";
+        for (let i in colorList) {
+          txt += `
+          <li>
+            <a style="color:${colorList[i].color}">${colorList[i].name}</a>
+          </li>
+        `;
+        }
+        document.getElementById("demo").innerHTML = `<ul>${txt}</ul>`;
+      });
+    </script>
+  </body>
+</html>

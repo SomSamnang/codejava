@@ -1,0 +1,245 @@
+.menu-bar {
+  background-color: hotpink;
+  padding: 2px;
+}
+.menu {
+  position: relative;
+  height: 80px;
+}
+.menu-loader {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.menu-loader {
+  display: flex;
+  /* flex-direction: column; Stack vertically */
+  justify-content: right;
+  align-items: end;
+  z-index: 1;
+  padding: 20px;
+}
+
+.loading-icon-1 {
+  width: 25px;
+  height: 25px;
+  background-image: url("img/loading.gif");
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-bottom: 5px; /* Space between icon and text */
+}
+
+/* .loading-text-1 {
+  font-size: 16px;
+  color: black;
+} */
+.item-loader {
+  display: flex;
+  flex-direction: column; /* Stack vertically */
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.item-loader {
+  position: fixed; /* Lock in place */
+  top: 0;
+  left: 0;
+  width: 100vw; /* Full screen width */
+  height: 100vh; /* Full screen height */
+  background: rgba(255, 255, 255, 0.7); /* Optional background */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* On top of other content */
+}
+
+.loading-icon {
+  width: 40px;
+  height: 40px;
+  background-image: url("img/loading.gif");
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-bottom: 10px;
+}
+
+.loading-text {
+  font-size: 16px;
+  color: black;
+  font-weight: bold;
+}
+
+.menu ul {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  list-style-type: none;
+  align-items: center;
+}
+.menu ul li a {
+  text-decoration: none;
+  color: white;
+  font-size: 25px;
+  font-family: "Angkor", serif;
+  display: block;
+  padding: 21px;
+  cursor: pointer;
+}
+.menu ul li a:hover {
+  background-color: blue;
+  color: red;
+}
+.item-box {
+  height: 320px;
+  margin-top: 10px;
+  padding: 0 5px;
+}
+.item-box .box {
+  width: 100%;
+  height: 100%;
+  background-color: #eee;
+}
+.item-box .box img {
+  width: 100%;
+  height: 70%;
+  object-fit: cover;
+  display: block;
+}
+.item-box .box span {
+  width: 100%;
+  height: 30%;
+  font-size: 15px;
+  font-family: "Battambang", serif;
+  margin-left: 5px;
+  color: black;
+  margin-top: 5px;
+  display: block;
+}
+.item-box .box p {
+  width: 100%;
+  height: 30%;
+  font-size: 18px;
+  font-family: "Battambang", system-ui;
+  margin-left: 5px;
+  color: black;
+  display: block;
+}
+.popup {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+#progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background-color: red; /* Blue color */
+  z-index: 9999;
+  display: none;
+  transition: width 0.3s ease;
+}
+.custom-footer {
+  margin-top: 10px;
+  background-color: #00ff00;
+  color: blue;
+  padding: 30px 20px 10px 20px;
+  font-family: Arial, sans-serif;
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.footer-column {
+  flex: 1 1 200px;
+  min-width: 200px;
+}
+
+.footer-column h4 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column ul li {
+  margin-bottom: 5px;
+}
+
+.highlight {
+  color: lime;
+}
+
+hr {
+  border: none;
+  border-top: 2px solid blue;
+  margin: 20px 0 10px;
+}
+
+.footer-bottom {
+  text-align: center;
+  font-size: 14px;
+}
+.imd {
+  color: white;
+  text-decoration: none;
+  padding: 5px;
+  display: inline-block;
+  transition: color 0.3s;
+}
+
+.imd:hover {
+  color: lime;
+}
+
+.imd.active {
+  color: lime;
+  font-weight: bold;
+  border-bottom: 2px solid lime;
+}
+
+/* Stack footer columns vertically on mobile */
+@media (max-width: 767.98px) {
+  .footer-container  {
+    display: block;
+  }
+  .footer-column {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+}
+
+/* Horizontal footer columns on larger screens */
+@media (min-width: 768px) {
+  .footer-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .footer-column {
+    flex: 1;
+    min-width: 180px;
+  }
+}
